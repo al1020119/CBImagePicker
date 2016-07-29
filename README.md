@@ -1,6 +1,6 @@
-![](http://ww3.sinaimg.cn/large/006tNc79gw1f6b1a3kpu7j30m80gon0m.jpg)
-![](http://ww2.sinaimg.cn/large/006tNc79gw1f6b1a0vn87j30m80gojuh.jpg)
-![](http://ww1.sinaimg.cn/large/006tNc79gw1f6b19yklqgj30m80go0wc.jpg)
+![](http://ww1.sinaimg.cn/large/006tNc79gw1f6b1cxb5o2j30aq0crwhc.jpg)
+![](http://ww1.sinaimg.cn/large/006tNc79gw1f6b1cvec90j30ar0cq0v7.jpg)
+![](http://ww1.sinaimg.cn/large/006tNc79gw1f6b1ctwck3j30an0co41g.jpg)
 
 # CBImagePicker&Browser
 
