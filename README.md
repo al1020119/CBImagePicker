@@ -1,4 +1,6 @@
-![](https://d13yacurqjgara.cloudfront.net/users/173861/screenshots/2362476/selectphotos.gif)
+![](http://ww3.sinaimg.cn/large/006tNc79gw1f6b1a3kpu7j30m80gon0m.jpg)
+![](http://ww2.sinaimg.cn/large/006tNc79gw1f6b1a0vn87j30m80gojuh.jpg)
+![](http://ww1.sinaimg.cn/large/006tNc79gw1f6b19yklqgj30m80go0wc.jpg)
 
 # CBImagePicker&Browser
 
