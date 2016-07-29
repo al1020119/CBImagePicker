@@ -13,28 +13,36 @@ A very very wonderful image picker ！！！
 
 - **Present**
 
-`CBImagePicker *imagePicker = [[CBImagePicker alloc] init];`
+```
+CBImagePicker *imagePicker = [[CBImagePicker alloc] init];
 
-`UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:imagePicker];`
+UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:imagePicker];
 
-`[self presentViewController:nav animated:YES completion:nil];`
+[self presentViewController:nav animated:YES completion:nil];
+```
 
 - **Push**
 
-`CBImagePicker *imagePicker = [[CBImagePicker alloc] init];`
+```
+CBImagePicker *imagePicker = [[CBImagePicker alloc] init];
 
-`[self.navigationController pushViewController:imagePicker animated:YES];`
+[self.navigationController pushViewController:imagePicker animated:YES];
+```
 
 #### Some Delegate Methods
 
 - **Rrturn a seleted images array.**
 
-`- (void)imagePicker:(CBImagePicker *)picker didFinishPickingMediaWithImageArray:(NSArray *)imageArray;`
+```
+- (void)imagePicker:(CBImagePicker *)picker didFinishPickingMediaWithImageArray:(NSArray *)imageArray;
 
 - **Cancel the image picker.**
 
-`- (void)imagePickerDidCancel:(CBImagePicker *)picker;`
+- (void)imagePickerDidCancel:(CBImagePicker *)picker;
+```
 
 ### Other
 
-**Nothing else, enjoy!**
+```
+Nothing else, enjoy!
+```
