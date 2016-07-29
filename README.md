@@ -9,7 +9,7 @@
 ## Installation
 
 1. Move CBCategory folder、CBImageBrowser folder and CBImagePicker folder into your project.
-2. <u>#import "CBImageBrowser.h"</u> and <u>#import "CBImagePicker.h"</u> 
+2. **#import "CBImageBrowser.h"** and **#import "CBImagePicker.h"**
 3. There you go!
 
 ## Basic Usage
