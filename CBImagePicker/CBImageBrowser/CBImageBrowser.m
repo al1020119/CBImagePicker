@@ -7,7 +7,7 @@
 //
 
 #import "CBImageBrowser.h"
-#import "UIView+Addition.h"
+#import "UIView+CBAddition.h"
 #import "CBImageModel.h"
 #import "CBImageScrollViewCell.h"
 #import "CBImageScrollView.h"

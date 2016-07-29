@@ -1,14 +1,14 @@
 //
-//  UIImage+Addition.m
+//  UIImage+CBAddition.m
 //  CBImagePicker
 //
-//  Created by 陈超邦 on 2016/7/24.
+//  Created by 陈超邦 on 2016/7/29.
 //  Copyright © 2016年 陈超邦. All rights reserved.
 //
 
-#import "UIImage+Addition.h"
+#import "UIImage+CBAddition.h"
 
-@implementation UIImage (Addition)
+@implementation UIImage (CBAddition)
 
 #pragma Getter
 - (CGFloat)sizeWidth {

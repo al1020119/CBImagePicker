@@ -1,14 +1,14 @@
 //
-//  UIView+Addition.m
+//  UIView+CBAddition.m
 //  CBImagePicker
 //
-//  Created by 陈超邦 on 2016/7/24.
+//  Created by 陈超邦 on 2016/7/29.
 //  Copyright © 2016年 陈超邦. All rights reserved.
 //
 
-#import "UIView+Addition.h"
+#import "UIView+CBAddition.h"
 
-@implementation UIView (Addition)
+@implementation UIView (CBAddition)
 
 #pragma Getter
 - (CGFloat)originLeft {
@@ -122,6 +122,5 @@
     }
     return nil;
 }
-
 
 @end

@@ -10,7 +10,7 @@
 #import "CBImageScrollView.h"
 #import "CBImageScrollViewCell.h"
 #import "CBImageModel.h"
-#import "UIView+Addition.h"
+#import "UIView+CBAddition.h"
 
 @interface CBImageScrollView()<UIScrollViewDelegate>
 

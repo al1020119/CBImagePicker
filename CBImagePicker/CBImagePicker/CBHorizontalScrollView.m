@@ -8,8 +8,8 @@
 //
 
 #import "CBHorizontalScrollView.h"
-#import "UIView+Addition.h"
-#import "UIImage+Addition.h"
+#import "UIView+CBAddition.h"
+#import "UIImage+CBAddition.h"
 #import "CBImageModel.h"
 #import "CBImageBrowser.h"
 

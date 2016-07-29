@@ -11,13 +11,13 @@
 #import "CBAlbumTableView.h"
 #import "CBNavigationBarTitleView.h"
 #import "CBAlbumTableView.h"
-#import "UIImage+Addition.h"
+#import "UIImage+CBAddition.h"
 #import "CBImageBrowser.h"
 #import "CBImageModel.h"
 #import "CBAssetsModel.h"
-#import "UIView+Addition.h"
+#import "UIView+CBAddition.h"
 #import "CBHorizontalScrollView.h"
-#import "UIView+Addition.h"
+#import "UIView+CBAddition.h"
 
 @interface CBImagePicker ()<UICollectionViewDelegate,UICollectionViewDataSource>
 

@@ -1,14 +1,14 @@
 //
-//  UIView+Addition.h
+//  UIView+CBAddition.h
 //  CBImagePicker
 //
-//  Created by 陈超邦 on 2016/7/24.
+//  Created by 陈超邦 on 2016/7/29.
 //  Copyright © 2016年 陈超邦. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface UIView (Addition)
+@interface UIView (CBAddition)
 
 /**
  *  左坐标
