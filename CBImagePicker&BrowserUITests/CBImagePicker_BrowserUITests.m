@@ -1,18 +1,18 @@
 //
-//  CBImagePickerUITests.m
-//  CBImagePickerUITests
+//  CBImagePicker_BrowserUITests.m
+//  CBImagePicker&BrowserUITests
 //
-//  Created by 陈超邦 on 16/6/9.
+//  Created by 陈超邦 on 2016/7/29.
 //  Copyright © 2016年 陈超邦. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface CBImagePickerUITests : XCTestCase
+@interface CBImagePicker_BrowserUITests : XCTestCase
 
 @end
 
-@implementation CBImagePickerUITests
+@implementation CBImagePicker_BrowserUITests
 
 - (void)setUp {
     [super setUp];
