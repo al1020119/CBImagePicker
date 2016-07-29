@@ -36,6 +36,7 @@ CBImagePicker *imagePicker = [[CBImagePicker alloc] init];
 
 ```
 - (void)imagePicker:(CBImagePicker *)picker didFinishPickingMediaWithImageArray:(NSArray *)imageArray;
+```
 
 - **Cancel the image picker.**
 
