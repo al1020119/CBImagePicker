@@ -1,8 +1,8 @@
-![](http://ww3.sinaimg.cn/large/006tNc79gw1f6ati8d86sg30m80gonpj.gif)
+![](https://d13yacurqjgara.cloudfront.net/users/173861/screenshots/2362476/selectphotos.gif)
 
 # CBImagePicker&Browser
 
-A very very wonderful image picker ！！！
+创意来自dribbble
 
 ## Installation
 
@@ -10,7 +10,7 @@ A very very wonderful image picker ！！！
 2. <u>#import "CBImageBrowser.h"</u> and <u>#import "CBImagePicker.h"</u> 
 3. There you go!
 
-#### Basic Usage
+## Basic Usage
 
 - **Present**
 
@@ -30,7 +30,7 @@ CBImagePicker *imagePicker = [[CBImagePicker alloc] init];
 [self.navigationController pushViewController:imagePicker animated:YES];
 ```
 
-#### Some Delegate Methods
+## Some Delegate Methods
 
 - **Rrturn a seleted images array.**
 
