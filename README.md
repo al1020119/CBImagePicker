@@ -4,7 +4,7 @@
 
 # CBImagePicker&Browser
 
-创意来自dribbble
+创意来自[Photo Picker Interaction](https://dribbble.com/shots/2362476-Photo-Picker-Interaction)
 
 ## Installation
 
