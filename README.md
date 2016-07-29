@@ -34,7 +34,7 @@ CBImagePicker *imagePicker = [[CBImagePicker alloc] init];
 
 ## Some Delegate Methods
 
-- **Rrturn a seleted images array.**
+- **Return a seleted images array.**
 
 ```
 - (void)imagePicker:(CBImagePicker *)picker didFinishPickingMediaWithImageArray:(NSArray *)imageArray;
