@@ -109,7 +109,7 @@
         
         [_cellArray addObject:imageView];
         
-        self.contentSize = CGSizeMake(HORZONTAL_IMAGE_CELL_SIZE.width * _assetsArray.count + 10.f * (_assetsArray.count + 1), self.sizeHeight);
+        self.contentSize = CGSizeMake(HORZONTAL_IMAGE_CELL_SIZE.width * _assetsArray.count + 10.f * _assetsArray.count, self.sizeHeight);
         
         if (_assetsArray.count == 1) {
             [self setContentInset:UIEdgeInsetsMake(0, (self.sizeWidth - imageView.sizeWidth) / 2 - imageView.originLeft, 0, 0)];
@@ -127,7 +127,7 @@
             [obj removeFromSuperview];
         }];
         
-        self.contentSize = CGSizeMake(HORZONTAL_IMAGE_CELL_SIZE.width * _assetsArray.count + 10.f * (_assetsArray.count + 1), self.sizeHeight);
+        self.contentSize = CGSizeMake(HORZONTAL_IMAGE_CELL_SIZE.width * _assetsArray.count + 10.f * _assetsArray.count, self.sizeHeight);
 
         [_assetsArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             
