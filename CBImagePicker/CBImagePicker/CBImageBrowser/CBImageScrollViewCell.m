@@ -9,6 +9,7 @@
 #import "CBImageScrollViewCell.h"
 #import "UIView+CBAddition.h"
 #import "UIImage+CBAddition.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface CBImageScrollViewCell()<UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
@@ -38,9 +39,7 @@
         self.showsHorizontalScrollIndicator = NO;
         
         self.frame = [UIScreen mainScreen].bounds;
-        
-        _imageManager = [[PHCachingImageManager alloc] init];
-        
+                
         [self initImageContainerView];
         
         [self initImageView];
@@ -159,20 +158,39 @@
         
         self.imageView.image = model.fullSizeImage;
     }else if (model.imageAsset) {
+        _imageManager = [[PHCachingImageManager alloc] init];
+
         [_imageManager requestImageForAsset:model.imageAsset
                                  targetSize:PHImageManagerMaximumSize
                                 contentMode:PHImageContentModeDefault
                                     options:nil
                               resultHandler:^(UIImage *result, NSDictionary *info) {
                                   self.maximumZoomScale = 3;
-
+                                  
                                   self.imageView.image = result;
+                                  
+                                  [self reLayoutSubviews];
                               }];
     }else if(model.imageUrl) {
         
+        [self.imageView sd_setImageWithURL:[NSURL URLWithString:model.imageUrl] placeholderImage:model.smallImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            CGFloat progress = receivedSize / (float)expectedSize;
+            
+            progress = progress < 0.01 ? 0.01 : progress > 1 ? 1 : progress;
+            
+            if (isnan(progress)) progress = 0;
+            
+            _progressLayer.hidden = NO;
+            
+            _progressLayer.strokeEnd = progress;
+        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            _progressLayer.hidden = YES;
+            
+            self.maximumZoomScale = 3;
+            
+            [self reLayoutSubviews];
+        }];
     }
-    
-    [self reLayoutSubviews];
 }
 
 + (CBImageScrollViewCell *)cellForDataArray:(NSArray *)dataArray

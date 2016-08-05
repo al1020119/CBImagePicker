@@ -1,0 +1,6 @@
+framework module Pods_CBImagePicker {
+  umbrella header "Pods-CBImagePicker-umbrella.h"
+
+  export *
+  module * { export * }
+}
