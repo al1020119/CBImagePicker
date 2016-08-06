@@ -17,7 +17,17 @@ typedef void(^navigationBarTitleViewUnSelectedBlock)(void);
 /**
  *  The title of navigationView.
  */
-@property (nonatomic, strong, readwrite) UIButton    *navigationBarTitleButton;
+@property (nonatomic, strong, readwrite) UIButton *navigationBarTitleButton;
+
+/**
+ *  The color of indicator;
+ */
+@property (nonatomic, assign, readwrite) UIColor *indicatorColor;
+
+/**
+ *  The color of title.
+ */
+@property (nonatomic, strong, readwrite) UIColor  *titleColor;
 
 /**
  *  The imageView of navigationView.

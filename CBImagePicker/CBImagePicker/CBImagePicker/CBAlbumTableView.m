@@ -8,6 +8,7 @@
 
 #import "CBAlbumTableView.h"
 #import "CBAlbumTableViewCell.h"
+#import "UIView+CBAddition.h"
 
 @interface CBAlbumTableView()<UITableViewDataSource,UITableViewDelegate>
 
@@ -38,7 +39,9 @@
 - (void)setAssetsGroupArray:(NSMutableArray *)assetsGroupArray {
     _assetsGroupArray = assetsGroupArray;
     
-    [self reloadData];
+    CGFloat ablunTableViewHeight = _assetsGroupArray.count > 5 ? 5 * 50.f : _assetsGroupArray.count * 50.f;
+    
+    self.frame = CGRectMake(4, -ablunTableViewHeight , [UIScreen mainScreen].bounds.size.width - 8, ablunTableViewHeight);
 }
 
 #pragma - TableView delegate.

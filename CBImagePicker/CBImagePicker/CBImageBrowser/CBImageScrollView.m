@@ -85,7 +85,9 @@
         
         cell.imageView.frame = self.bounds;
         
-        cell.originLeft = self.sizeWidth * idx;
+        cell.tag = 100 + idx;
+        
+        cell.originLeft = self.sizeWidth * idx + CELL_PADDING / 2;
         
         [cell configureCellWithModel:dataArray[idx]];
         
@@ -101,29 +103,26 @@
 
 #pragma - ScrollView delegate.
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    if (!decelerate) {
-        [self hidePageControl];
-    }
+    _pageControl.alpha = 1;
 }
 
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
-                     withVelocity:(CGPoint)velocity
-              targetContentOffset:(inout CGPoint *)targetContentOffset {
-    if (_imageScrollViewIndexBlock) {
-        _imageScrollViewIndexBlock(targetContentOffset->x / self.sizeWidth);
-    }
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    
+    NSInteger intPage = targetContentOffset->x / self.sizeWidth;
+    
+    _imageScrollViewIndexBlock ? _imageScrollViewIndexBlock(intPage) : nil;
 }
+
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
     NSInteger intPage = self.contentOffset.x / self.sizeWidth + 0.5;
     
     intPage = intPage < 0 ? 0 : intPage >= _dataArr.count ? (int)_dataArr.count - 1 : intPage;
     
     _pageControl.currentPage = intPage;
     
-    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut animations:^{
-        _pageControl.alpha = 1;
-    }completion:nil];
+    [self hidePageControl];
 }
 
 @end

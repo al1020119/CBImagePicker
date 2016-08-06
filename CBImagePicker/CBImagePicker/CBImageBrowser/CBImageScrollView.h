@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define CELL_PADDING 10.f
+
 typedef void(^CBImageScrollViewIndexBlock)(NSInteger index);
 
 @interface CBImageScrollView : UIScrollView

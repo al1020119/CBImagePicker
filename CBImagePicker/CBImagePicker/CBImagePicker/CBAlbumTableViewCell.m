@@ -85,7 +85,7 @@
     PHCachingImageManager *imageManager = [[PHCachingImageManager alloc] init];
 
     [imageManager requestImageForAsset:fetchResult[0]
-                            targetSize:PHImageManagerMaximumSize
+                            targetSize:_cellImageView.frame.size
                            contentMode:PHImageContentModeAspectFill
                                options:nil
                          resultHandler:^(UIImage *result, NSDictionary *info) {

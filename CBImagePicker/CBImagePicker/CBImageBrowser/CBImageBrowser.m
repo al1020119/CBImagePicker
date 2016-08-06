@@ -77,7 +77,7 @@
     
     [self addSubview:_blurBackground];
     
-    _scrollView = [[CBImageScrollView alloc] initWithFrame:CGRectMake(0, 0, self.sizeWidth, self.sizeHeight)];
+    _scrollView = [[CBImageScrollView alloc] initWithFrame:CGRectMake(-CELL_PADDING / 2, 0, self.sizeWidth + CELL_PADDING, self.sizeHeight)];
     
     _scrollView.alwaysBounceHorizontal = _assetArrays.count > 1;
     
@@ -258,7 +258,7 @@
     
     [toContainer addSubview:self];
     
-    _scrollView.contentSize = CGSizeMake(_scrollView.sizeWidth * _assetArrays.count, _scrollView.sizeHeight);
+    _scrollView.contentSize = CGSizeMake(_scrollView.sizeWidth * _assetArrays.count, _scrollView.sizeWidth);
     
     [_scrollView scrollRectToVisible:CGRectMake(_scrollView.sizeWidth * _fromItemIndex, 0, _scrollView.sizeWidth, _scrollView.sizeHeight) animated:NO];
     

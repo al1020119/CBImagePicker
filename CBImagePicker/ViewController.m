@@ -20,14 +20,16 @@
 }
 
 - (IBAction)selectImages:(id)sender {
-    if ([[(UIButton *)sender titleLabel].text isEqualToString:@"Modal"]) {
-        CBImagePicker *imagePicker = [[CBImagePicker alloc] init];
+    CBImagePicker *imagePicker = [[CBImagePicker alloc] init];
+    
+    imagePicker.indicatorColor = [UIColor lightGrayColor];
+        
+    if ([[(UIButton *)sender titleLabel].text isEqualToString:@"Present"]) {
         
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:imagePicker];
         
         [self presentViewController:nav animated:YES completion:nil];
     }else {
-        CBImagePicker *imagePicker = [[CBImagePicker alloc] init];
         
         [self.navigationController pushViewController:imagePicker animated:YES];
     }

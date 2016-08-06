@@ -19,6 +19,8 @@
 
 #define PAN_RELEASE_DISTANCE 150.f
 
+#define CELL_PADDING 10.f
+
 @class CBImageBrowser;
 
 @protocol CBImageBrowserDelegate <NSObject>

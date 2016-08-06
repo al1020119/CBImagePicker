@@ -18,8 +18,6 @@
 
 @property (nonatomic, strong, readwrite) NSMutableArray           *seletedImageArray;
 
-@property (nonatomic, assign, readwrite) NSInteger                seletedImageNum;
-
 @property (nonatomic, assign, readwrite) NSInteger                currentAssetsIndex;
 
 @property (nonatomic, strong, readwrite) PHImageManager           *imageManager;
@@ -42,9 +40,59 @@
 
 @property (nonatomic, strong, readwrite) CBImageBrowser           *imageBrowser;
 
+@property (nonatomic, strong, readwrite) UICollectionReusableView *collectionHeardView;
+
 @end
 
 @implementation CBImagePicker
+
+#pragma - setter and getter
+
+- (CGFloat)collectionCellWidthCompareToScreen {
+    if (!_collectionCellWidthCompareToScreen) {
+        return 4;
+    }else {
+        return _collectionCellWidthCompareToScreen;
+    }
+}
+
+- (void)setNavigationBarColor:(UIColor *)navigationBarColor {
+    _navigationBarColor = navigationBarColor;
+    
+    self.navigationController.navigationBar.barTintColor = [UIColor redColor];
+}
+
+- (void)setTitleColor:(UIColor *)titleColor {
+    _titleColor = titleColor;
+    
+    _navigationBarTitleView.titleColor = titleColor;
+}
+
+- (void)setIndicatorColor:(UIColor *)indicatorColor {
+    _indicatorColor = indicatorColor;
+    
+    _navigationBarTitleView.indicatorColor = indicatorColor;
+}
+
+- (void)setNavigationItemTitleColor:(UIColor *)navigationItemTitleColor {
+    _navigationItemTitleColor = navigationItemTitleColor;
+    
+    NSMutableDictionary *itemStyleDic = [[NSMutableDictionary alloc] init];
+
+    itemStyleDic[NSFontAttributeName] = [UIFont systemFontOfSize:13.f];
+    
+    itemStyleDic[NSForegroundColorAttributeName] = _navigationItemTitleColor;
+    
+    [_commitItem setTitleTextAttributes:itemStyleDic forState:UIControlStateNormal];
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+    _backgroundColor = backgroundColor;
+    
+    _imageCollectionView.backgroundColor = backgroundColor;
+    
+    self.view.backgroundColor = backgroundColor;
+}
 
 #pragma - view init.
 - (void)viewDidLoad {
@@ -58,20 +106,24 @@
     
     _cellArray = [[NSMutableArray alloc] init];
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = _backgroundColor ? _backgroundColor : [UIColor whiteColor];
     
-    [self judgeIsHavePhotoAblumAuthority];
+    if (_navigationBarColor) {
+        self.navigationController.navigationBar.barTintColor = _navigationBarColor;
+    }
+    
+    [self judgeIfHavePhotoAblumAuthority];
     
     [self initImageCollectionView];
     
     [self initNavigationButton];
     
+    [self initCBHorizontalScrollView];
+    
     [self initAlbumTableView];
     
     [self initAuthorizationStatusDeniedView];
     
-    [self initCBHorizontalScrollView];
-
     [self initNavigationBarTitleView];
 }
 
@@ -92,13 +144,8 @@
 
 - (void)initCBHorizontalScrollView {
     if (!_horizontalScrollView) {
-        _horizontalScrollView = [[CBHorizontalScrollView alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height, self.view.sizeWidth, 2 * COLLECTION_CELL_SIZE_HEIGHT)];
-        
-        _horizontalScrollView.hidden = YES;
-        
-        _horizontalScrollView.backgroundColor = [UIColor whiteColor];
-        
-        [self.view addSubview:_horizontalScrollView];
+        _horizontalScrollView = [[CBHorizontalScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.sizeWidth, 2 * COLLECTION_CELL_SIZE_HEIGHT)];
+        _horizontalScrollView.backgroundColor = [UIColor clearColor];
     }
 }
 
@@ -109,6 +156,14 @@
         } unSelectedBlock:^{
             [self showAssetsTableViewWithAnimated:YES directionUp:YES];
         }];
+        
+        if (_indicatorColor) {
+            _navigationBarTitleView.indicatorColor = _indicatorColor;
+        }
+        
+        if (_titleColor) {
+            _navigationBarTitleView.titleColor = _titleColor;
+        }
         
         self.navigationItem.titleView = _navigationBarTitleView;
         
@@ -130,7 +185,7 @@
     
     itemStyleDic[NSFontAttributeName] = [UIFont systemFontOfSize:13.f];
     
-    itemStyleDic[NSForegroundColorAttributeName] = [UIColor colorWithRed:0.257 green:0.609 blue:0.504 alpha:1.000];
+    itemStyleDic[NSForegroundColorAttributeName] = _navigationItemTitleColor ? _navigationItemTitleColor : [UIColor blackColor];
     
     [_commitItem setTitleTextAttributes:itemStyleDic forState:UIControlStateNormal];
     
@@ -172,13 +227,9 @@
         
         [self.view addSubview:_bgView];
         
-        CGFloat ablunTableViewHeight;
+        CGFloat ablunTableViewHeight = _assetsGroupArray.count > 5 ? 5 * 50.f : _assetsGroupArray.count * 50.f;
         
-        if (_assetsGroupArray) {
-            ablunTableViewHeight = _assetsGroupArray.count > 5 ? 5 * 50.f : _assetsGroupArray.count * 50.f;
-        }
-        
-        _albumTableView = [[CBAlbumTableView alloc] initWithFrame:CGRectMake(4, -ablunTableViewHeight , self.view.frame.size.width - 8, ablunTableViewHeight) selectedBlock:^(long index) {
+        _albumTableView = [[CBAlbumTableView alloc] initWithFrame:CGRectMake(4, -ablunTableViewHeight , [UIScreen mainScreen].bounds.size.width - 8, ablunTableViewHeight) selectedBlock:^(long index) {
             if (_currentAssetsIndex != index) {
                 _currentAssetsIndex = index;
                 
@@ -196,11 +247,13 @@
                 
                 _commitItem.enabled = NO;
                 
-                _seletedImageNum = 0;
+                [_seletedImageArray removeAllObjects];
                 
-                [_horizontalScrollView removeAllCells];
-                
-                [self moveCollectionWithAnimationUp:YES];
+                if (_imageCollectionView.originUp == 0) {
+                    [_horizontalScrollView removeAllCells];
+
+                    [self moveCollectionWithAnimationUp:YES];
+                }
             }else {
                 [_navigationBarTitleView navigationBarTitleButtonAction:nil];
             }
@@ -223,11 +276,17 @@
     
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     
-    _imageCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) collectionViewLayout:layout];
+    [layout setHeaderReferenceSize:CGSizeMake(self.view.sizeWidth, 2 * COLLECTION_CELL_SIZE_HEIGHT)];
+    
+    _imageCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, -2 * COLLECTION_CELL_SIZE_HEIGHT, self.view.sizeWidth, self.view.sizeHeight + 2 * COLLECTION_CELL_SIZE_HEIGHT) collectionViewLayout:layout];
+    
+    _imageCollectionView.contentSize = CGSizeMake(0, self.view.sizeHeight + 2 * COLLECTION_CELL_SIZE_HEIGHT);
+    
+    [_imageCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"UICollectionReusableView"];
     
     [_imageCollectionView registerClass:[CBAssetsViewCell class] forCellWithReuseIdentifier:@"CBAssetsViewCell"];
     
-    _imageCollectionView.backgroundColor = [UIColor clearColor];
+    _imageCollectionView.backgroundColor = self.view.backgroundColor;
     
     _imageCollectionView.alwaysBounceVertical = YES;
     
@@ -241,7 +300,7 @@
 }
 
 #pragma - authorization judgement.
-- (void)judgeIsHavePhotoAblumAuthority {
+- (void)judgeIfHavePhotoAblumAuthority {
     PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
     
     if (status == PHAuthorizationStatusRestricted ||
@@ -314,6 +373,10 @@
     }];
     
     [self initAssetArray];
+    
+    _albumTableView.assetsGroupArray = _assetsGroupArray;
+    
+    [_albumTableView reloadData];
 }
 
 - (void)initAssetArray {
@@ -445,37 +508,33 @@
         
         if ([assetsModel.selectedStaus isEqual:@YES]) {
             
-            _seletedImageNum += 1;
-            
             assetsModel.imageAsset = _currentFetchResult[indexPath.row];
             
             assetsModel.image = assetsModel.image;
             
             [_seletedImageArray addObject:_currentFetchResult[indexPath.row]];
-        }else {
-            _seletedImageNum -= 1;
             
-            [_seletedImageArray removeObject:_currentFetchResult[indexPath.row]];
-        }
-        _horizontalScrollView.imageModel = assetsModel;
-        
-        [_assetsArray replaceObjectAtIndex:indexPath.row withObject:assetsModel];
-        
-        if (_seletedImageNum) {
-            if (_seletedImageNum == 1) {
+            if (_seletedImageArray.count == 1) {
                 [self moveCollectionWithAnimationUp:NO];
             }
             
             _commitItem.enabled = YES;
             
-            _commitItem.title = [NSString stringWithFormat:@"确认选择(%lu)",_seletedImageNum];
+            _commitItem.title = [NSString stringWithFormat:@"确认选择(%lu)",_seletedImageArray.count];
         }else {
-            [self moveCollectionWithAnimationUp:YES];
+            [_seletedImageArray removeObject:_currentFetchResult[indexPath.row]];
             
-            _commitItem.title = @"确认选择";
-            
-            _commitItem.enabled = NO;
+            if (!_seletedImageArray.count) {
+                [self moveCollectionWithAnimationUp:YES];
+                
+                _commitItem.title = @"确认选择";
+                
+                _commitItem.enabled = NO;
+            }
         }
+        _horizontalScrollView.imageModel = assetsModel;
+        
+        [_assetsArray replaceObjectAtIndex:indexPath.row withObject:assetsModel];
     }];
     
     return cell;
@@ -493,33 +552,38 @@
     return UIEdgeInsetsMake(2, 2, 2, 2);
 }
 
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    UICollectionReusableView *collectionHeardView;
+    
+    if (kind == UICollectionElementKindSectionHeader){
+        collectionHeardView = (UICollectionReusableView *)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"UICollectionReusableView" forIndexPath:indexPath];
+        
+        collectionHeardView.backgroundColor = [UIColor clearColor];
+        
+        [collectionHeardView addSubview:_horizontalScrollView];
+    }
+     return collectionHeardView;
+}
+
 #pragma - show with animation.
 - (void)moveCollectionWithAnimationUp:(BOOL)animationUp {
-    if (!animationUp) {
-        _horizontalScrollView.originLeft = self.view.sizeWidth;
-    }
-    
     [UIView animateWithDuration:0.3f
                           delay:0.f
          usingSpringWithDamping:1.f
           initialSpringVelocity:25.f
                         options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState animations:^{
                             if (animationUp) {
-                                _horizontalScrollView.hidden = YES;
-
+                                _imageCollectionView.originUp = -2 * COLLECTION_CELL_SIZE_HEIGHT;
+                                
+                                _imageCollectionView.sizeHeight += 2 * COLLECTION_CELL_SIZE_HEIGHT;
+                                
+                                [_imageCollectionView setContentOffset:CGPointMake(0, -self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height) animated:YES];
+                            }else {
                                 _imageCollectionView.originUp = 0;
                                 
-                                _imageCollectionView.size = CGSizeMake(self.view.sizeWidth, self.view.sizeHeight);
+                                _imageCollectionView.sizeHeight -= 2 * COLLECTION_CELL_SIZE_HEIGHT;
                                 
-                                _horizontalScrollView.originLeft = self.view.sizeWidth;
-                            }else {
-                                _horizontalScrollView.hidden = NO;
-
-                                _imageCollectionView.originUp = 5 / 2 * COLLECTION_CELL_SIZE_HEIGHT;
-                                
-                                _imageCollectionView.size = CGSizeMake(self.view.sizeWidth, self.view.sizeHeight - _imageCollectionView.originUp);
-                                
-                                _horizontalScrollView.originLeft = 0;
+                                [_imageCollectionView setContentOffset:CGPointMake(0, -self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height) animated:YES];
                             }
     } completion:nil];
 }

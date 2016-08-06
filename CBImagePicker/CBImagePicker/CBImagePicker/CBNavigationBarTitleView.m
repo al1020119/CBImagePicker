@@ -19,6 +19,18 @@
 
 @implementation CBNavigationBarTitleView
 
+- (void)setTitleColor:(UIColor *)titleColor {
+    _titleColor = titleColor;
+    
+    [_navigationBarTitleButton setTitleColor:_titleColor forState:UIControlStateNormal];
+}
+
+- (void)setIndicatorColor:(UIColor *)indicatorColor {
+    _indicatorColor = indicatorColor;
+    
+    _navigationBarTitleImageView.tintColor = indicatorColor;
+}
+
 #pragma - init.
 - (instancetype)initWithFrame:(CGRect)frame
                 selectedBlock:(navigationBarTitleViewSelectedBlock)selectedBlock
@@ -43,7 +55,11 @@
     if (!_navigationBarTitleButton) {
         _navigationBarTitleButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
-        [_navigationBarTitleButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        if (_titleColor) {
+            [_navigationBarTitleButton setTitleColor:_titleColor forState:UIControlStateNormal];
+        }else {
+            [_navigationBarTitleButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        }
         
         _navigationBarTitleButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.f];
         
@@ -59,7 +75,11 @@
     if (!_navigationBarTitleImageView) {
         _navigationBarTitleImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         
-        [_navigationBarTitleImageView setImage:[UIImage imageNamed:@"lay2_btm_arr"]];
+        [_navigationBarTitleImageView setImage:[[UIImage imageNamed:@"pullButton_black"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+        
+        if (_indicatorColor) {
+            _navigationBarTitleImageView.tintColor  = _indicatorColor;
+        }
         
         [_navigationBarTitleImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
         
@@ -125,7 +145,15 @@
                                                                               toItem:_navigationBarTitleButton
                                                                            attribute:NSLayoutAttributeRight
                                                                           multiplier:1.f
-                                                                            constant:0.f];
+                                                                            constant:5.f];
+    
+    NSLayoutConstraint *imageContraintsRight = [NSLayoutConstraint constraintWithItem:_navigationBarTitleImageView
+                                                                           attribute:NSLayoutAttributeRight
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:_navigationBarTitleButton
+                                                                           attribute:NSLayoutAttributeRight
+                                                                          multiplier:1.f
+                                                                            constant:17.f];
     
     NSLayoutConstraint *imageContraintsCenterX = [NSLayoutConstraint constraintWithItem:_navigationBarTitleButton
                                                                               attribute:NSLayoutAttributeCenterY
@@ -135,7 +163,15 @@
                                                                              multiplier:1.f
                                                                                constant:0.f];
     
-    [self addConstraints:@[buttonContraintsTop,buttonConstraintsBottom,buttonContraintsCenterX,imageContraintsLeft,imageContraintsCenterX]];
+    NSLayoutConstraint *imageContraintsHeight = [NSLayoutConstraint constraintWithItem:_navigationBarTitleImageView
+                                                                           attribute:NSLayoutAttributeHeight
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:_navigationBarTitleButton
+                                                                           attribute:NSLayoutAttributeHeight
+                                                                          multiplier:0.28
+                                                                            constant:0.f];
+    
+    [self addConstraints:@[buttonContraintsTop,buttonConstraintsBottom,buttonContraintsCenterX,imageContraintsLeft,imageContraintsRight,imageContraintsCenterX,imageContraintsHeight]];
 }
 
 @end
