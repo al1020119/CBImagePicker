@@ -20,10 +20,6 @@
 #import "CBHorizontalScrollView.h"
 #import "UIView+CBAddition.h"
 
-#define COLLECTION_CELL_SIZE_HEIGHT ([UIScreen mainScreen].bounds.size.width - 10) / 4
-
-#define POPUPMENU_HEIGHT 100.f
-
 #define WEAK_OBJ(o) autoreleasepool{} __weak typeof(o) o##Weak = o;
 
 #define STRONG_OBJ(o) autoreleasepool{} __strong typeof(o) o##Strong = o;

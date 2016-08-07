@@ -36,7 +36,7 @@ typedef void(^CBAssetsViewCellSelecteBlock)(NSNumber *seletedStaus);
 
 - (void)initAssetsImageView {
     if (!_assetsImageView) {
-        _assetsImageView = [[UIView alloc] initWithFrame:CGRectZero];
+        _assetsImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         
         _assetsImageView.clipsToBounds = YES;
         
@@ -63,7 +63,7 @@ typedef void(^CBAssetsViewCellSelecteBlock)(NSNumber *seletedStaus);
 }
 
 - (void)configureWithModel:(CBAssetsModel *)mdoel {
-    self.assetsImageView.layer.contents = (__bridge id _Nullable)mdoel.image.CGImage;
+    self.assetsImageView.image = mdoel.image;
     
     self.seletedStaus = mdoel.selectedStaus;
 }

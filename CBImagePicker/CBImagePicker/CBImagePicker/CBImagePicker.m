@@ -144,7 +144,8 @@
 
 - (void)initCBHorizontalScrollView {
     if (!_horizontalScrollView) {
-        _horizontalScrollView = [[CBHorizontalScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.sizeWidth, 2 * COLLECTION_CELL_SIZE_HEIGHT)];
+        
+        _horizontalScrollView = [[CBHorizontalScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.sizeWidth, 2 * ([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen)];
         _horizontalScrollView.backgroundColor = [UIColor clearColor];
     }
 }
@@ -204,9 +205,7 @@
 - (void)initAlbumTableView {
     if (!_albumTableView) {
         _bgView = [[UIView alloc] initWithFrame:self.view.frame];
-        
-        _bgView.backgroundColor = [UIColor blackColor];
-        
+                
         _bgView.alpha = 0.35f;
         
         _bgView.hidden = YES;
@@ -276,11 +275,11 @@
     
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     
-    [layout setHeaderReferenceSize:CGSizeMake(self.view.sizeWidth, 2 * COLLECTION_CELL_SIZE_HEIGHT)];
+    [layout setHeaderReferenceSize:CGSizeMake(self.view.sizeWidth, 2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen))];
     
-    _imageCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, -2 * COLLECTION_CELL_SIZE_HEIGHT, self.view.sizeWidth, self.view.sizeHeight + 2 * COLLECTION_CELL_SIZE_HEIGHT) collectionViewLayout:layout];
+    _imageCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, -2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen), self.view.sizeWidth, self.view.sizeHeight + 2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen)) collectionViewLayout:layout];
     
-    _imageCollectionView.contentSize = CGSizeMake(0, self.view.sizeHeight + 2 * COLLECTION_CELL_SIZE_HEIGHT);
+    _imageCollectionView.contentSize = CGSizeMake(0, self.view.sizeHeight + 2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen));
     
     [_imageCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"UICollectionReusableView"];
     
@@ -543,7 +542,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(COLLECTION_CELL_SIZE_HEIGHT, COLLECTION_CELL_SIZE_HEIGHT);
+    return CGSizeMake((([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen), (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen));
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
@@ -567,21 +566,27 @@
 
 #pragma - show with animation.
 - (void)moveCollectionWithAnimationUp:(BOOL)animationUp {
+    if (animationUp) {
+        _horizontalScrollView.originLeft = self.view.sizeWidth;
+    }
+    
     [UIView animateWithDuration:0.3f
                           delay:0.f
          usingSpringWithDamping:1.f
           initialSpringVelocity:25.f
                         options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState animations:^{
                             if (animationUp) {
-                                _imageCollectionView.originUp = -2 * COLLECTION_CELL_SIZE_HEIGHT;
+                                _imageCollectionView.originUp = -2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen);
                                 
-                                _imageCollectionView.sizeHeight += 2 * COLLECTION_CELL_SIZE_HEIGHT;
+                                _imageCollectionView.sizeHeight += 2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen);
                                 
                                 [_imageCollectionView setContentOffset:CGPointMake(0, -self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height) animated:YES];
                             }else {
                                 _imageCollectionView.originUp = 0;
                                 
-                                _imageCollectionView.sizeHeight -= 2 * COLLECTION_CELL_SIZE_HEIGHT;
+                                _imageCollectionView.sizeHeight -= 2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen);
+                                
+                                _horizontalScrollView.originLeft = 0;
                                 
                                 [_imageCollectionView setContentOffset:CGPointMake(0, -self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height) animated:YES];
                             }

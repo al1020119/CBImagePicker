@@ -307,12 +307,12 @@
     
     _scrollView.userInteractionEnabled = NO;
     
-    [UIView animateWithDuration:oneTime delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:oneTime delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut animations:^{
         cell.imageView.frame = cell.imageContainerView.bounds;
         
         [cell.imageView.layer setValue:@(1.01) forKey:@"transform.scale"];
     }completion:^(BOOL finished) {
-        [UIView animateWithDuration:oneTime delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut animations:^{
+        [UIView animateWithDuration:oneTime delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut animations:^{
             [cell.imageView.layer setValue:@(1.0) forKey:@"transform.scale"];
             
             _scrollView.pageControl.alpha = 1;
@@ -330,7 +330,8 @@
     }];
 }
 
-- (void)dismissAnimated:(BOOL)animated completion:(void (^)(void))completion {
+- (void)dismissAnimated:(BOOL)animated
+             completion:(void (^)(void))completion {
     UIView *fromView = nil;
     
     CBImageScrollViewCell *imageCell = [CBImageScrollViewCell cellForDataArray:_cellArray

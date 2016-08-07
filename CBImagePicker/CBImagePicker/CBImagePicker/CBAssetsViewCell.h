@@ -14,12 +14,12 @@
 /**
  *  The imageView of cell.
  */
-@property (nonatomic, strong, readwrite) UIView   *assetsImageView;
+@property (nonatomic, strong, readwrite) UIImageView   *assetsImageView;
 
 /**
  *  The cell's select status.
  */
-@property (nonatomic, strong, readwrite) NSNumber *seletedStaus;
+@property (nonatomic, strong, readwrite) NSNumber      *seletedStaus;
 
 /**
  *  The block which work when selected.
