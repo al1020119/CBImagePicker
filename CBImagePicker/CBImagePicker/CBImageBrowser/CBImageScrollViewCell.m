@@ -149,47 +149,48 @@
     
     [self setZoomScale:1.0 animated:NO];
     
-    self.maximumZoomScale = 1;
-
-    self.imageView.image = model.smallImage;
+    self.maximumZoomScale = 3;
     
-    if (model.fullSizeImage) {
-        self.maximumZoomScale = 3;
+    if (!_imageView.image) {
+        self.maximumZoomScale = 1;
         
-        self.imageView.image = model.fullSizeImage;
-    }else if (model.imageAsset) {
-        _imageManager = [[PHCachingImageManager alloc] init];
-
-        [_imageManager requestImageForAsset:model.imageAsset
-                                 targetSize:PHImageManagerMaximumSize
-                                contentMode:PHImageContentModeDefault
-                                    options:nil
-                              resultHandler:^(UIImage *result, NSDictionary *info) {
-                                  self.maximumZoomScale = 3;
-                                  
-                                  self.imageView.image = result;
-                                  
-                                  [self reLayoutSubviews];
-                              }];
-    }else if(model.imageUrl) {
-        
-        [self.imageView sd_setImageWithURL:[NSURL URLWithString:model.imageUrl] placeholderImage:model.smallImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-            CGFloat progress = receivedSize / (float)expectedSize;
-            
-            progress = progress < 0.01 ? 0.01 : progress > 1 ? 1 : progress;
-            
-            if (isnan(progress)) progress = 0;
-            
-            _progressLayer.hidden = NO;
-            
-            _progressLayer.strokeEnd = progress;
-        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            _progressLayer.hidden = YES;
-            
-            self.maximumZoomScale = 3;
+        self.imageView.image = model.smallImage;
+                
+        if (model.fullSizeImage) {
+            self.imageView.image = model.fullSizeImage;
             
             [self reLayoutSubviews];
-        }];
+        }else if(model.imageAsset){
+            _imageManager = [[PHCachingImageManager alloc] init];
+            
+            [_imageManager requestImageForAsset:model.imageAsset
+                                     targetSize:PHImageManagerMaximumSize
+                                    contentMode:PHImageContentModeAspectFill
+                                        options:nil
+                                  resultHandler:^(UIImage *result, NSDictionary *info) {
+                                      if (result) {
+                                          self.imageView.image = result;
+                                          
+                                          [self reLayoutSubviews];
+                                      }
+                                  }];
+        }else if(model.imageUrl) {
+            [self.imageView sd_setImageWithURL:[NSURL URLWithString:model.imageUrl] placeholderImage:model.smallImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                CGFloat progress = receivedSize / (float)expectedSize;
+                
+                progress = progress < 0.01 ? 0.01 : progress > 1 ? 1 : progress;
+                
+                if (isnan(progress)) progress = 0;
+                
+                _progressLayer.hidden = NO;
+                
+                _progressLayer.strokeEnd = progress;
+            } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                _progressLayer.hidden = YES;
+                
+                [self reLayoutSubviews];
+            }];
+        }
     }
 }
 

@@ -36,6 +36,13 @@ typedef void(^CBImageScrollViewIndexBlock)(NSInteger index);
                                    dataArray:(NSMutableArray *)dataArray;
 
 /**
+ *  Load the around cells.
+ *
+ *  @param index page index.
+ */
+- (void)loadTheAroundCellDataWithCurrentIndex:(NSInteger)index;
+
+/**
  *  Hide the page controll.
  */
 - (void)hidePageControl;

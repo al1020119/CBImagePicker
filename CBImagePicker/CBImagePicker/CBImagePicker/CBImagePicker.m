@@ -12,9 +12,9 @@
 
 @property (nonatomic, strong, readwrite) NSMutableArray           *assetsGroupArray;
 
-@property (nonatomic, strong, readwrite) NSMutableArray           *assetsArray;
+@property (nonatomic, strong, readwrite) NSMutableDictionary      *assetsDic;
 
-@property (nonatomic, strong, readwrite) NSMutableArray           *cellArray;
+@property (nonatomic, strong, readwrite) NSMutableDictionary      *cellDic;
 
 @property (nonatomic, strong, readwrite) NSMutableArray           *seletedImageArray;
 
@@ -98,13 +98,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _assetsArray = [[NSMutableArray alloc] init];
+    _assetsDic = [[NSMutableDictionary alloc] init];
     
     _assetsGroupArray = [[NSMutableArray alloc] init];
     
     _seletedImageArray = [[NSMutableArray alloc] init];
     
-    _cellArray = [[NSMutableArray alloc] init];
+    _cellDic = [[NSMutableDictionary alloc] init];
     
     self.view.backgroundColor = _backgroundColor ? _backgroundColor : [UIColor whiteColor];
     
@@ -236,7 +236,7 @@
                 
                 [_navigationBarTitleView navigationBarTitleButtonAction:nil];
                 
-                [_cellArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                [_cellDic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
                     CBAssetsViewCell *cell = (CBAssetsViewCell *)obj;
                     
                     cell.seletedStaus = @NO;
@@ -379,31 +379,11 @@
 }
 
 - (void)initAssetArray {
-    [_assetsArray removeAllObjects];
+    [_assetsDic removeAllObjects];
     
     _currentFetchResult = [PHAsset fetchAssetsInAssetCollection:_assetsGroupArray[_currentAssetsIndex] options:nil];
     
-    [_currentFetchResult enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [_imageManager requestImageForAsset:obj
-                                 targetSize:CGSizeMake(0.75 * self.view.sizeWidth, 0.75 * self.view.sizeWidth)
-                                contentMode:PHImageContentModeAspectFill
-                                    options:nil
-                              resultHandler:^(UIImage *result, NSDictionary *info) {
-                                  if (result) {
-                                      CBAssetsModel *assetsModel = [[CBAssetsModel alloc] init];
-                                      
-                                      assetsModel.image = result;
-                                      
-                                      assetsModel.selectedStaus = @NO;
-                                      
-                                      [_assetsArray addObject:assetsModel];
-                                  }
-                                  
-                                  if (_assetsArray.count == _currentFetchResult.count) {
-                                      [_imageCollectionView reloadData];
-                                  }
-                              }];
-    }];
+    [_imageCollectionView reloadData];
 }
 
 #pragma Action
@@ -413,23 +393,6 @@
 
 - (void)commit:(id)sender {
     if ([self.imagePickerDelegate respondsToSelector:@selector(imagePicker:didFinishPickingMediaWithImageArray:)]) {
-        
-        NSMutableArray *imageArr = [[NSMutableArray alloc] init];
-        
-        [_seletedImageArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [_imageManager requestImageForAsset:obj
-                                     targetSize:PHImageManagerMaximumSize
-                                    contentMode:PHImageContentModeAspectFill
-                                        options:nil
-                                  resultHandler:^(UIImage *result, NSDictionary *info) {
-                                      if (result) {
-                                          [imageArr addObject:result];
-                                      }
-                                      if (imageArr.count == _seletedImageArray.count) {
-                                          [self.imagePickerDelegate imagePicker:self didFinishPickingMediaWithImageArray:imageArr];
-                                      }
-                                  }];
-        }];
     }
     
     [self turnBack:nil];
@@ -478,7 +441,7 @@
 
 #pragma CollectionView delegate.
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    [_cellArray removeAllObjects];
+    [_cellDic removeAllObjects];
 
     if (_assetsGroupArray.count) {
         [_navigationBarTitleView.navigationBarTitleButton setTitle:NSLocalizedString([_assetsGroupArray[_currentAssetsIndex] localizedTitle], nil) forState:UIControlStateNormal];
@@ -491,27 +454,50 @@
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     CBAssetsViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CBAssetsViewCell" forIndexPath:indexPath];
     
-    CBAssetsModel *assetsModel = (CBAssetsModel *)_assetsArray[indexPath.row];
+    CBAssetsModel *assetsModel;
     
-    [cell configureWithModel:assetsModel];
-    
-    if (_cellArray.count <= _currentFetchResult.count) {
-        [_cellArray addObject:cell];
+    if (_assetsDic.count < _currentFetchResult.count) {
+        assetsModel = [[CBAssetsModel alloc] init];
+        
+        @autoreleasepool {
+            [_imageManager requestImageForAsset:_currentFetchResult[indexPath.row]
+                                     targetSize:CGSizeMake(200, 200)
+                                    contentMode:PHImageContentModeAspectFill
+                                        options:nil
+                                  resultHandler:^(UIImage *result, NSDictionary *info) {
+                                      if (result) {
+                                          assetsModel.image = result;
+                                          
+                                          assetsModel.selectedStaus = @NO;
+                                          
+                                          [_assetsDic setObject:assetsModel forKey:[NSString stringWithFormat:@"%ld",(long)indexPath.row]];
+                                          
+                                          [_cellDic setObject:cell forKey:[NSString stringWithFormat:@"%ld",(long)indexPath.row]];
+                                          
+                                          [cell configureWithModel:assetsModel];
+                                      }
+                                  }];
+        }
+        
+    }else {
+        assetsModel = (CBAssetsModel *)[_assetsDic objectForKey:[NSString stringWithFormat:@"%ld",(long)indexPath.row]];
+        
+        [_cellDic setObject:cell forKey:[NSString stringWithFormat:@"%ld",(long)indexPath.row]];
+        
+        [cell configureWithModel:assetsModel];
     }
-
+    
     [cell buttonSelectBlock:^(NSNumber *seletedStaus) {
         
         assetsModel.selectedStaus = seletedStaus;
-                
+        
         assetsModel.index = indexPath.row;
+        
+        assetsModel.imageAsset = _currentFetchResult[indexPath.row];
         
         if ([assetsModel.selectedStaus isEqual:@YES]) {
             
-            assetsModel.imageAsset = _currentFetchResult[indexPath.row];
-            
-            assetsModel.image = assetsModel.image;
-            
-            [_seletedImageArray addObject:_currentFetchResult[indexPath.row]];
+            [_seletedImageArray addObject:assetsModel];
             
             if (_seletedImageArray.count == 1) {
                 [self moveCollectionWithAnimationUp:NO];
@@ -519,9 +505,8 @@
             
             _commitItem.enabled = YES;
             
-            _commitItem.title = [NSString stringWithFormat:@"确认选择(%lu)",_seletedImageArray.count];
         }else {
-            [_seletedImageArray removeObject:_currentFetchResult[indexPath.row]];
+            [_seletedImageArray removeObject:assetsModel];
             
             if (!_seletedImageArray.count) {
                 [self moveCollectionWithAnimationUp:YES];
@@ -531,9 +516,13 @@
                 _commitItem.enabled = NO;
             }
         }
-        _horizontalScrollView.imageModel = assetsModel;
+        _commitItem.title = [NSString stringWithFormat:@"确认选择(%lu)",_seletedImageArray.count];
         
-        [_assetsArray replaceObjectAtIndex:indexPath.row withObject:assetsModel];
+        @autoreleasepool {
+            _horizontalScrollView.imageModel = assetsModel;
+        }
+        
+        [_assetsDic setObject:assetsModel forKey:[NSString stringWithFormat:@"%ld",(long)indexPath.row]];
     }];
     
     return cell;

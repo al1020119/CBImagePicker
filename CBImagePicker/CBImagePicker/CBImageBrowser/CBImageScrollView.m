@@ -88,9 +88,7 @@
         cell.tag = 100 + idx;
         
         cell.originLeft = self.sizeWidth * idx + CELL_PADDING / 2;
-        
-        [cell configureCellWithModel:dataArray[idx]];
-        
+                
         cell.currentPageIndex = idx;
         
         [_cellArr addObject:cell];
@@ -101,6 +99,38 @@
     return _cellArr;
 }
 
+- (void)loadTheAroundCellDataWithCurrentIndex:(NSInteger)index {
+    CBImageScrollViewCell *cellMiddle = [self viewWithTag:index + 100];
+    
+    [cellMiddle configureCellWithModel:_dataArr[index]];
+    
+    if (_dataArr.count) {
+        if (index >= 1) {
+            CBImageScrollViewCell *cellLeft = [self viewWithTag:index + 99];
+            
+            [cellLeft configureCellWithModel:_dataArr[index - 1]];
+        }
+        
+        if (index >= 2) {
+            CBImageScrollViewCell *cellLeftLeft = [self viewWithTag:index + 98];
+            
+            [cellLeftLeft configureCellWithModel:_dataArr[index - 2]];
+        }
+       
+        if (index + 1 <= _dataArr.count - 1) {
+            CBImageScrollViewCell *cellRight = [self viewWithTag:index + 101];
+            
+            [cellRight configureCellWithModel:_dataArr[index + 1]];
+        }
+        
+        if (index + 2 <= _dataArr.count - 1) {
+            CBImageScrollViewCell *cellRightRight = [self viewWithTag:index + 102];
+            
+            [cellRightRight configureCellWithModel:_dataArr[index + 2]];
+        }
+    }
+}
+
 #pragma - ScrollView delegate.
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     _pageControl.alpha = 1;
@@ -109,6 +139,8 @@
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     
     NSInteger intPage = targetContentOffset->x / self.sizeWidth;
+    
+    [self loadTheAroundCellDataWithCurrentIndex:intPage];
     
     _imageScrollViewIndexBlock ? _imageScrollViewIndexBlock(intPage) : nil;
 }

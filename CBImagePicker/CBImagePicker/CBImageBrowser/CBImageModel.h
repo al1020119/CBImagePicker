@@ -33,7 +33,7 @@
 @property (nonatomic, strong, readwrite) NSString  *imageUrl;
 
 /**
- *  The Asset which can be used to get image from PhotoKit library.
+ *  The sourse of asset.
  */
 @property (nonatomic, strong, readwrite) PHAsset   *imageAsset;
 

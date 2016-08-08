@@ -96,12 +96,12 @@
         imageView.tag = _assetsArray.count;
         
         [_imageManager requestImageForAsset:imageModel.imageAsset
-                                 targetSize:CGSizeMake(HORZONTAL_IMAGE_CELL_SIZE.width * 2, HORZONTAL_IMAGE_CELL_SIZE.height * 2)
+                                 targetSize:CGSizeMake(2 * HORZONTAL_IMAGE_CELL_SIZE.width, 2 * HORZONTAL_IMAGE_CELL_SIZE.height)
                                 contentMode:PHImageContentModeDefault
                                     options:nil
                               resultHandler:^(UIImage *result, NSDictionary *info) {
                                   imageModel.image = result;
-
+                                  
                                   imageView.image = result;
                               }];
         
@@ -176,9 +176,9 @@
         
         model.thumbView = _cellArray[idx];
         
-        model.smallImage = [(CBAssetsModel *)obj image];
-        
         model.imageAsset = [(CBAssetsModel *)obj imageAsset];
+        
+        model.smallImage = [(CBAssetsModel *)obj image];
         
         [modelArray addObject:model];
     }];

@@ -281,6 +281,8 @@
     CBImageScrollViewCell *imageCell = [CBImageScrollViewCell cellForDataArray:_cellArray
                                                                      pageIndex:_fromItemIndex];
     
+    [_scrollView loadTheAroundCellDataWithCurrentIndex:_fromItemIndex];
+    
     [imageCell reLayoutSubviews];
     
     [self showWithAnimated:animated
