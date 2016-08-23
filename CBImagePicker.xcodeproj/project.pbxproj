@@ -559,7 +559,8 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
+			GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				};
 			name = Debug;
 		};
 		2C64AFE31D50FF3000A82A30 /* Release */ = {
@@ -613,7 +614,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.chenchaobang.CBImagePicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-			};
+			GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				};
 			name = Debug;
 		};
 		2C64AFE61D50FF3000A82A30 /* Release */ = {
@@ -640,7 +642,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.chenchaobang.CBImagePickerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CBImagePicker.app/CBImagePicker";
-			};
+			GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				};
 			name = Debug;
 		};
 		2C64AFE91D50FF3000A82A30 /* Release */ = {
@@ -663,7 +666,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.chenchaobang.CBImagePickerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_TARGET_NAME = CBImagePicker;
-			};
+			GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				};
 			name = Debug;
 		};
 		2C64AFEC1D50FF3000A82A30 /* Release */ = {
