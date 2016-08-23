@@ -6,7 +6,7 @@
 
 
 
-[![Build Status](https://travis-ci.org/cbangchen/CBImagePicker.svg?branch=master)](https://travis-ci.org/cbangchen/CBImagePicker)[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://opensource.org/licenses/mit-license.php) [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)    
+[![Build Status](https://travis-ci.org/cbangchen/CBImagePicker.svg?branch=master)](https://travis-ci.org/cbangchen/CBImagePicker) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://opensource.org/licenses/mit-license.php) [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)    
 
 创意来自[Photo Picker Interaction](https://dribbble.com/shots/2362476-Photo-Picker-Interaction)
 
