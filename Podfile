@@ -3,4 +3,5 @@ use_frameworks!
 
 target ‘CBImagePicker’ do
   pod ’SDWebImage’
+  pod ‘Masonry’
 end

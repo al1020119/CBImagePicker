@@ -9,6 +9,8 @@
 #import "CBNavigationBarTitleView.h"
 #import "CBImagePicker.h"
 
+#import "Masonry.h"
+
 @interface CBNavigationBarTitleView()
 
 @property(nonatomic, strong, readwrite) navigationBarTitleViewSelectedBlock inSelectedBlock;
@@ -42,8 +44,6 @@
         
         [self initNavigationBarTitleImageView];
         
-        [self addConstraints];
-        
         _inSelectedBlock = selectedBlock;
         
         _inUnSelectedBlock = unselectedBlock;
@@ -68,6 +68,12 @@
         [_navigationBarTitleButton setTranslatesAutoresizingMaskIntoConstraints:NO];
         
         [self addSubview:_navigationBarTitleButton];
+        
+        [_navigationBarTitleButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.and.top.equalTo(self);
+            
+            make.centerX.equalTo(self);
+        }];
     }
 }
 
@@ -84,6 +90,16 @@
         [_navigationBarTitleImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
         
         [self addSubview:_navigationBarTitleImageView];
+        
+        [_navigationBarTitleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(_navigationBarTitleButton.mas_right).offset(5.f);
+            
+            make.right.equalTo(_navigationBarTitleButton.mas_right).offset(17.f);
+            
+            make.centerY.equalTo(_navigationBarTitleButton);
+            
+            make.height.equalTo(_navigationBarTitleButton).multipliedBy(0.28f);
+        }];
     }
 }
 
@@ -111,67 +127,6 @@
         
         [_navigationBarTitleButton setSelected:NO];
     }
-}
-
-#pragma - constraints.
-- (void)addConstraints {
-    NSLayoutConstraint *buttonConstraintsBottom = [NSLayoutConstraint constraintWithItem:_navigationBarTitleButton
-                                                                               attribute:NSLayoutAttributeBottom
-                                                                               relatedBy:NSLayoutRelationEqual
-                                                                                  toItem:self
-                                                                               attribute:NSLayoutAttributeBottom
-                                                                              multiplier:1.f
-                                                                                constant:0.f];
-    
-    NSLayoutConstraint *buttonContraintsTop = [NSLayoutConstraint constraintWithItem:_navigationBarTitleButton
-                                                                           attribute:NSLayoutAttributeTop
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self
-                                                                           attribute:NSLayoutAttributeTop
-                                                                          multiplier:1.f
-                                                                            constant:0.f];
-    
-    NSLayoutConstraint *buttonContraintsCenterX = [NSLayoutConstraint constraintWithItem:_navigationBarTitleButton
-                                                                               attribute:NSLayoutAttributeCenterX
-                                                                               relatedBy:NSLayoutRelationEqual
-                                                                                  toItem:self
-                                                                               attribute:NSLayoutAttributeCenterX
-                                                                              multiplier:1.f
-                                                                                constant:0.f];
-    
-    NSLayoutConstraint *imageContraintsLeft = [NSLayoutConstraint constraintWithItem:_navigationBarTitleImageView
-                                                                           attribute:NSLayoutAttributeLeft
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:_navigationBarTitleButton
-                                                                           attribute:NSLayoutAttributeRight
-                                                                          multiplier:1.f
-                                                                            constant:5.f];
-    
-    NSLayoutConstraint *imageContraintsRight = [NSLayoutConstraint constraintWithItem:_navigationBarTitleImageView
-                                                                           attribute:NSLayoutAttributeRight
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:_navigationBarTitleButton
-                                                                           attribute:NSLayoutAttributeRight
-                                                                          multiplier:1.f
-                                                                            constant:17.f];
-    
-    NSLayoutConstraint *imageContraintsCenterX = [NSLayoutConstraint constraintWithItem:_navigationBarTitleButton
-                                                                              attribute:NSLayoutAttributeCenterY
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:_navigationBarTitleImageView
-                                                                              attribute:NSLayoutAttributeCenterY
-                                                                             multiplier:1.f
-                                                                               constant:0.f];
-    
-    NSLayoutConstraint *imageContraintsHeight = [NSLayoutConstraint constraintWithItem:_navigationBarTitleImageView
-                                                                           attribute:NSLayoutAttributeHeight
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:_navigationBarTitleButton
-                                                                           attribute:NSLayoutAttributeHeight
-                                                                          multiplier:0.28
-                                                                            constant:0.f];
-    
-    [self addConstraints:@[buttonContraintsTop,buttonConstraintsBottom,buttonContraintsCenterX,imageContraintsLeft,imageContraintsRight,imageContraintsCenterX,imageContraintsHeight]];
 }
 
 @end

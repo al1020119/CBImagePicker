@@ -7,6 +7,7 @@
 //
 
 #import "CBImagePicker.h"
+#import "Masonry.h"
 
 @interface CBImagePicker ()<UICollectionViewDelegate,UICollectionViewDataSource>
 
@@ -277,7 +278,19 @@
     
     [layout setHeaderReferenceSize:CGSizeMake(self.view.sizeWidth, 2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen))];
     
-    _imageCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, -2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen), self.view.sizeWidth, self.view.sizeHeight + 2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen)) collectionViewLayout:layout];
+//    _imageCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, -2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen), self.view.sizeWidth, self.view.sizeHeight + 2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen)) collectionViewLayout:layout];
+    
+    _imageCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+    
+    [self.view addSubview:_imageCollectionView];
+    
+    _imageCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [_imageCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.and.bottom.and.right.equalTo(self.view);
+        
+        make.top.equalTo(self.mas_topLayoutGuideTop).offset(-2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen));
+    }];
     
     _imageCollectionView.contentSize = CGSizeMake(0, self.view.sizeHeight + 2 * (([UIScreen mainScreen].bounds.size.width - 10) / self.collectionCellWidthCompareToScreen));
     
@@ -294,8 +307,6 @@
     _imageCollectionView.dataSource = self;
     
     _imageCollectionView.showsHorizontalScrollIndicator = YES;
-    
-    [self.view addSubview:_imageCollectionView];
 }
 
 #pragma - authorization judgement.

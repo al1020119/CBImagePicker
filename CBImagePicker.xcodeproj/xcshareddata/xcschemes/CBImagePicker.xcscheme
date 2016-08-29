@@ -56,7 +56,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "84C2A5397440971CDFFFB21E94DEC6BC"
+               BlueprintIdentifier = "1CE9A15B334A69A7435E7F32E1DA1EF2"
                BuildableName = "Pods_CBImagePicker.framework"
                BlueprintName = "Pods-CBImagePicker"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
@@ -70,7 +70,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0B1662AF5E82DA10892876A88A6C0D42"
+               BlueprintIdentifier = "BD8C1B95B6EFCB09D7BA93D549B08567"
                BuildableName = "SDWebImage.framework"
                BlueprintName = "SDWebImage"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
